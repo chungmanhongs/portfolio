@@ -25,7 +25,7 @@ export default async function handler(req) {
 
     const data = await res.json();
 
-    const projects = data.results.map(page => {
+    const projects = await Promise.all(data.results.map(async page => {
       const p = page.properties;
       const get = (key, type = 'rich_text') => {
         if (!p[key]) return '';
@@ -33,6 +33,26 @@ export default async function handler(req) {
         if (type === 'rich_text') return p[key].rich_text?.[0]?.plain_text || '';
         return '';
       };
+
+      // body 필드가 비어있으면 페이지 본문에서 읽기
+      let body = get('body');
+      if (!body) {
+        try {
+          const blockRes = await fetch(`https://api.notion.com/v1/blocks/${page.id}/children`, {
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Notion-Version': '2022-06-28',
+            },
+          });
+          const blockData = await blockRes.json();
+          body = blockData.results
+            ?.filter(b => b.type === 'paragraph')
+            ?.map(b => b.paragraph?.rich_text?.[0]?.plain_text || '')
+            ?.filter(Boolean)
+            ?.join(' ') || '';
+        } catch(e) {}
+      }
+
       return {
         title:  get('이름', 'title'),
         year:   get('year'),
@@ -41,11 +61,11 @@ export default async function handler(req) {
         role:   get('role'),
         cat:    get('cat'),
         client: get('client'),
-        body:   get('body'),
+        body,
         tags:   get('tags'),
         images: [],
       };
-    });
+    }));
 
     return new Response(JSON.stringify(projects), {
       status: 200,
