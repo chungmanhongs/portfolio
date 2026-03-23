@@ -1995,7 +1995,53 @@ async function handleFormSubmit(){
 
 /* ── PROJECT DATA ── */
 /* images 필드를 프로젝트 객체 안으로 통합 */
-const PROJECTS = [
+con
+
+// ── Notion CMS 연동 ──
+// 하드코딩 이미지 (이미지 연동 전까지 유지)
+const _IMAGES = [
+  ['data:image/svg+xml,%3Csvg xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22 width%3D%221600%22 height%3D%22900%22 viewBox%3D%220%200%201600%20900%22%3E%3Crect width%3D%221600%22 height%3D%22900%22 fill%3D%22%23161616%22%2F%3E%3C%2Fsvg%3E', 'data:image/svg+xml,%3Csvg xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22 width%3D%221600%22 height%3D%22900%22 viewBox%3D%220%200%201600%20900%22%3E%3Crect width%3D%221600%22 height%3D%22900%22 fill%3D%22%23161616%22%2F%3E%3C%2Fsvg%3E', 'data:image/svg+xml,%3Csvg xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22 width%3D%221600%22 height%3D%22900%22 viewBox%3D%220%200%201600%20900%22%3E%3Crect width%3D%221600%22 height%3D%22900%22 fill%3D%22%23161616%22%2F%3E%3C%2Fsvg%3E', 'data:image/svg+xml,%3Csvg xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22 width%3D%221600%22 height%3D%22900%22 viewBox%3D%220%200%201600%20900%22%3E%3Crect width%3D%221600%22 height%3D%22900%22 fill%3D%22%23161616%22%2F%3E%3C%2Fsvg%3E', 'data:image/svg+xml,%3Csvg xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22 width%3D%221600%22 height%3D%22900%22 viewBox%3D%220%200%201600%20900%22%3E%3Crect width%3D%221600%22 height%3D%22900%22 fill%3D%22%23161616%22%2F%3E%3C%2Fsvg%3E', 'data:image/svg+xml,%3Csvg xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22 width%3D%221600%22 height%3D%22900%22 viewBox%3D%220%200%201600%20900%22%3E%3Crect width%3D%221600%22 height%3D%22900%22 fill%3D%22%23161616%22%2F%3E%3C%2Fsvg%3E', 'data:image/svg+xml,%3Csvg xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22 width%3D%221600%22 height%3D%22900%22 viewBox%3D%220%200%201600%20900%22%3E%3Crect width%3D%221600%22 height%3D%22900%22 fill%3D%22%23161616%22%2F%3E%3C%2Fsvg%3E', 'data:image/svg+xml,%3Csvg xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22 width%3D%221600%22 height%3D%22900%22 viewBox%3D%220%200%201600%20900%22%3E%3Crect width%3D%221600%22 height%3D%22900%22 fill%3D%22%23161616%22%2F%3E%3C%2Fsvg%3E'],
+  ['data:image/svg+xml,%3Csvg xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22 width%3D%221600%22 height%3D%22900%22 viewBox%3D%220%200%201600%20900%22%3E%3Crect width%3D%221600%22 height%3D%22900%22 fill%3D%22%23161616%22%2F%3E%3C%2Fsvg%3E', 'data:image/svg+xml,%3Csvg xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22 width%3D%221600%22 height%3D%22900%22 viewBox%3D%220%200%201600%20900%22%3E%3Crect width%3D%221600%22 height%3D%22900%22 fill%3D%22%23161616%22%2F%3E%3C%2Fsvg%3E', 'data:image/svg+xml,%3Csvg xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22 width%3D%221600%22 height%3D%22900%22 viewBox%3D%220%200%201600%20900%22%3E%3Crect width%3D%221600%22 height%3D%22900%22 fill%3D%22%23161616%22%2F%3E%3C%2Fsvg%3E', 'data:image/svg+xml,%3Csvg xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22 width%3D%221600%22 height%3D%22900%22 viewBox%3D%220%200%201600%20900%22%3E%3Crect width%3D%221600%22 height%3D%22900%22 fill%3D%22%23161616%22%2F%3E%3C%2Fsvg%3E', 'data:image/svg+xml,%3Csvg xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22 width%3D%221600%22 height%3D%22900%22 viewBox%3D%220%200%201600%20900%22%3E%3Crect width%3D%221600%22 height%3D%22900%22 fill%3D%22%23161616%22%2F%3E%3C%2Fsvg%3E', 'data:image/svg+xml,%3Csvg xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22 width%3D%221600%22 height%3D%22900%22 viewBox%3D%220%200%201600%20900%22%3E%3Crect width%3D%221600%22 height%3D%22900%22 fill%3D%22%23161616%22%2F%3E%3C%2Fsvg%3E', 'data:image/svg+xml,%3Csvg xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22 width%3D%221600%22 height%3D%22900%22 viewBox%3D%220%200%201600%20900%22%3E%3Crect width%3D%221600%22 height%3D%22900%22 fill%3D%22%23161616%22%2F%3E%3C%2Fsvg%3E'],
+  ['data:image/svg+xml,%3Csvg xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22 width%3D%221600%22 height%3D%22900%22 viewBox%3D%220%200%201600%20900%22%3E%3Crect width%3D%221600%22 height%3D%22900%22 fill%3D%22%23161616%22%2F%3E%3C%2Fsvg%3E', 'data:image/svg+xml,%3Csvg xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22 width%3D%221600%22 height%3D%22900%22 viewBox%3D%220%200%201600%20900%22%3E%3Crect width%3D%221600%22 height%3D%22900%22 fill%3D%22%23161616%22%2F%3E%3C%2Fsvg%3E'],
+];
+
+let PROJECTS = [];
+
+async function loadProjects() {
+  try {
+    const res = await fetch('/api/projects');
+    if (!res.ok) throw new Error('API error');
+    const data = await res.json();
+    PROJECTS = data.map((p, i) => ({
+      ...p,
+      images: _IMAGES[i] || [],
+    }));
+  } catch(e) {
+    console.warn('Notion API 실패, 하드코딩 데이터 사용:', e);
+    PROJECTS = _FALLBACK_PROJECTS;
+  }
+  // 프로젝트 컬러 초기화 및 리스트 렌더링
+  initProjectColors();
+  renderProjectList();
+}
+
+// 렌더링 함수 — Notion 데이터로 프로젝트 리스트 업데이트
+function renderProjectList() {
+  const items = document.querySelectorAll('.project-item');
+  items.forEach((item, i) => {
+    const p = PROJECTS[i];
+    if (!p) return;
+    const h2 = item.querySelector('.project-meta h2');
+    const tags = item.querySelector('.project-tags');
+    const year = item.querySelector('.project-year');
+    if (h2) h2.textContent = p.title;
+    if (tags) tags.textContent = p.tags;
+    if (year) year.textContent = p.year;
+    item.style.setProperty('--proj-color', p.color);
+  });
+}
+
+const _FALLBACK_PROJECTS = [
   {
     color:  '#ff6b9d',
     title:  'Honda Arcade Project',
@@ -3529,13 +3575,14 @@ bindSubmitBtn();
   wp.classList.add('active');
   requestAnimationFrame(() => {
     wp.classList.add('visible');
-    // nav 초기 상태 — More active, 바 좌→우 강제
     const navWork = document.getElementById('nav-work');
     if(navWork) {
       navWork.classList.remove('from-right');
       navWork.classList.add('active');
     }
   });
+  // Notion CMS에서 프로젝트 데이터 로드
+  loadProjects();
 })();
 
 /* ═══════════════════════════════
