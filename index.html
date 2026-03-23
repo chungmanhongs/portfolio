@@ -2530,14 +2530,23 @@ function closeFullscreen() {
     r.left > -r.width  && r.left < window.innerWidth;
 
   img.style.opacity = '0';
-  fs.classList.remove('fs-active', 'fs-idle', 'fs-ui-ready');
+  // 배경을 즉시 제거하지 않고 서서히 fade-out
+  fs.style.transition = 'background .975s cubic-bezier(.4,0,.2,1)';
+  fs.style.background = 'rgba(0,0,0,0)';
+  fs.classList.remove('fs-idle', 'fs-ui-ready');
   fs.removeEventListener('mousemove', fs._resetIdle);
   // 터치 환경에서 닫기 후 아래 요소로 click 전파 방지
   document.body.style.pointerEvents = 'none';
   setTimeout(() => { document.body.style.pointerEvents = ''; }, 400);
-
-  // fs 자체 pointer-events 즉시 해제 (모바일에서 검은 오버레이가 남는 문제 방지)
   fs.style.pointerEvents = 'none';
+
+  // fs-active는 애니 끝난 후 제거
+  setTimeout(() => {
+    fs.classList.remove('fs-active');
+    fs.style.transition = '';
+    fs.style.background = '';
+    fs.style.pointerEvents = '';
+  }, 975);
 
   const isMobile = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
 
